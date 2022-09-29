@@ -8,29 +8,29 @@ var TheSong_1 = require("../modun/TheSong");
 var ManagerAllAlbum_1 = require("../sevice/ManagerAllAlbum");
 var input = require('readline-sync');
 var idUser = null;
-var usercheck = null;
-var listAccouts = new ManagerAccount_1.ManagerAccount();
+var userCheck = null;
+var listAccounts = new ManagerAccount_1.ManagerAccount();
 var listAllAlbum = new ManagerAllAlbum_1.ManagerAllAlbum();
 function logIn() {
     var logIn = "-----LogIN-------\n 1, \u0110\u0103ng nh\u1EADp\n 2, \u0110\u0103ng k\u00FD\n 0, Tho\u00E1t";
     var choice;
     do {
         console.log(logIn);
-        choice = +input.question(" Nhap lua chon: ");
+        choice = input.question(" Nhap lua chon: ");
         switch (choice) {
-            case 1:
-                logInAccount();
+            case "1":
+                loginAccount();
                 break;
-            case 2:
+            case "2":
                 register();
                 break;
-            case 0:
+            case "0":
                 logOut();
                 break;
             default:
                 console.log(" nhap sai hãy nhập lại...");
         }
-    } while (choice != 0);
+    } while (choice != "0");
 }
 function register() {
     console.log("-----Đăng ký-----");
@@ -41,8 +41,8 @@ function register() {
         var idUser_1 = input.question(" nhap id nguoi dung:");
         var idRegex = /^[0-9]+$/;
         var testUser = idRegex.test(idUser_1);
-        for (var i = 0; i < listAccouts.listAccountManager.length; i++) {
-            if (listAccouts.listAccountManager[i].userPass == idUser_1) {
+        for (var i = 0; i < listAccounts.listAccountManager.length; i++) {
+            if (listAccounts.listAccountManager[i].userPass == idUser_1) {
                 testUser = false;
                 console.log(" tài khoản đã tồn tại...");
                 break;
@@ -56,8 +56,8 @@ function register() {
         var userName = input.question(" nhâp ten dang ký: ");
         var nameRegex = /^[0-9]+$/;
         var test = nameRegex.test(userName);
-        for (var i = 0; i < listAccouts.listAccountManager.length; i++) {
-            if (listAccouts.listAccountManager[i].userPass == userName) {
+        for (var i = 0; i < listAccounts.listAccountManager.length; i++) {
+            if (listAccounts.listAccountManager[i].userPass == userName) {
                 test = false;
                 console.log(" tài khoản đã tồn tại...");
             }
@@ -80,9 +80,9 @@ function register() {
                 else {
                     userPassDone = passWord;
                     var account = new account_1.Account(+idUserDone, userNameDone, userPassDone);
-                    listAccouts.add(account);
+                    listAccounts.add(account);
                     console.log("-------------");
-                    console.log(listAccouts);
+                    console.log(listAccounts);
                     flag = true;
                     flag2 = true;
                     console.log(" Đăng ký thành công...");
@@ -91,64 +91,64 @@ function register() {
         }
     } while (flag == false);
 }
-function logInAccount() {
+function loginAccount() {
     console.log("-----Đăng nhập------");
     console.log();
     var name = input.question(" nhap ten dang nhap: ");
     console.log();
     var pass = input.question(" nhap mat khau: ");
-    if (listAccouts.seachIndex(name, pass) == -1) {
+    if (listAccounts.searchIndex(name, pass) == -1) {
         console.log(" Đăng nhâp thất bại");
     }
     else {
         console.log(" Đăng nhập thành công");
-        usercheck = listAccouts.findName(name, pass);
-        idUser = usercheck.id;
+        userCheck = listAccounts.findName(name, pass);
+        idUser = userCheck.id;
         menuAlbum();
     }
 }
 function logOut() {
     idUser = null;
-    usercheck = null;
+    userCheck = null;
     logIn();
 }
 function menuAlbum() {
     var managerAlbumUser = null;
     if (listAllAlbum.findAlbumByUserId(idUser) == null) {
-        managerAlbumUser = new ManagerAlbum_1.ManagerAlbum();
+        managerAlbumUser = new ManagerAlbum_1.ManagerAlbum(userCheck);
         listAllAlbum.add(managerAlbumUser);
     }
     else {
         managerAlbumUser = listAllAlbum.findAlbumByUserId(idUser);
     }
-    var menu = "------MenuAlbum-------\n 1, Tao Anbum\n 2, S\u1EEDa album\n 3, Hi\u1EC3n th\u1ECB danh s\u00E1ch album\n 4, X\u00F3a Album \n 0, Thoat";
+    var menu = "------MenuAlbum-------\n 1, Tao Album\n 2, S\u1EEDa Album\n 3, Hi\u1EC3n th\u1ECB danh s\u00E1ch Album\n 4, X\u00F3a Album \n 0, Thoat";
     var choice;
     do {
         console.log(menu);
-        choice = +input.question(" Nhap lua chon: ");
+        choice = input.question(" Nhap lua chon: ");
         switch (choice) {
-            case 1:
+            case "1":
                 addAlbum(managerAlbumUser);
                 break;
-            case 2:
+            case "2":
                 editAlbum(managerAlbumUser);
                 break;
-            case 3:
+            case "3":
                 console.log(" Danh sách album...");
                 console.log("\n");
                 showAlbum(managerAlbumUser);
                 menuSong(managerAlbumUser);
                 break;
-            case 4:
+            case "4":
                 deleteAlbum(managerAlbumUser);
                 break;
-            case 0:
+            case "0":
                 break;
             default:
                 console.log(" nhap sai hay nhap lai...");
                 break;
         }
-    } while (choice != 0);
+    } while (choice != "0");
 }
 function addAlbum(managerAlbumUser) {
     console.log("----Thêm Album-----");
@@ -198,12 +198,12 @@ function editAlbum(managerAlbumUser) {
     console.log("---- Sửa tên Album----");
     console.log();
     showAlbum(managerAlbumUser);
-    var idedit = +input.question(" nhap Stt Album muon sua: ");
+    var idEdit = +input.question(" nhap Stt Album muon sua: ");
     console.log();
     var newName = input.question(" nhap ten moi cho album: ");
     for (var i = 0; i < managerAlbumUser.listAlbumManager.length; i++) {
-        if (managerAlbumUser.listAlbumManager[i].id == idedit) {
-            managerAlbumUser.findById(idedit);
+        if (managerAlbumUser.listAlbumManager[i].id == idEdit) {
+            managerAlbumUser.findById(idEdit);
             managerAlbumUser.listAlbumManager[i].name = newName;
             managerAlbumUser.findAll();
         }
@@ -227,27 +227,27 @@ function menuSong(managerAlbumUser) {
     var choice;
     do {
         console.log(menu);
-        choice = +input.question(" Nhap lua chon: ");
+        choice = input.question(" Nhap lua chon: ");
         switch (choice) {
-            case 1:
+            case "1":
                 showSong(managerAlbumUser);
                 break;
-            case 2:
+            case "2":
                 addSong(managerAlbumUser);
                 break;
-            case 3:
+            case "3":
                 deleteSong(managerAlbumUser);
                 break;
-            case 4:
+            case "4":
                 searchSong(managerAlbumUser);
                 break;
-            case 0:
+            case "0":
                 break;
             default:
                 console.log(" nhap sai ha nhap lai...");
                 break;
         }
-    } while (choice != 0);
+    } while (choice != "0");
 }
 // function addSong(managerAlbumUser: ManagerAlbum) {
 //     let stt = +input.question(" nhap album muon them bai hat: ")
@@ -270,36 +270,20 @@ function addSong(managerAlbumUser) {
     console.log();
     var id = input.question(" nhap id bai hat: ");
     var idRegex = /^[0-9]+$/;
-    var checkid = idRegex.test(id);
-    // for (let i = 0; i < managerAlbumUser.listAlbumManager.length; i++) {
-    //     for (let j =0; j< managerAlbumUser.listAlbumManager[i].listTheSong.length;j++){
-    //     if (managerAlbumUser.listAlbumManager[i].listTheSong[j].id == id) {
-    //         checkid = false;
-    //         console.log(" id bai hat đã tồn tại...")
-    //         break;
-    //     }}
-    // }
+    var checkId = idRegex.test(id);
     for (var i = 0; i < managerAlbumUser.listAlbumManager[stt - 1].listTheSong.length; i++) {
-        if (managerAlbumUser.listAlbumManager[stt - 1.].listTheSong[i].id == id) {
-            checkid = false;
+        if (managerAlbumUser.listAlbumManager[stt - 1].listTheSong[i].id == id) {
+            checkId = false;
             console.log(" id bai hat đã tồn tại...");
             break;
         }
     }
-    if (!checkid) {
+    if (!checkId) {
         console.log(" vui lòng nhập lại...");
     }
     else {
         var name_1 = input.question(" nhap ten bài hat: ");
         var composing = input.question(" sang tac: ");
-        // for (let i = 0; i < managerAlbumUser.listAlbumManager.length; i++) {
-        //     if (managerAlbumUser.listAlbumManager[i].id == stt ) {
-        //         let song: TheSong = new TheSong(+idSongDone, name, composing);
-        //         managerAlbumUser.listAlbumManager[i-1].add(song)
-        //         console.log(" thêm bài hát thành công")
-        //         console.log(managerAlbumUser.listAlbumManager)
-        //     }
-        // }
         managerAlbumUser.listAlbumManager[stt - 1].listTheSong.push(new TheSong_1.TheSong(+id, name_1, composing));
     }
 }
@@ -311,6 +295,7 @@ function showSong(managerAlbumUser) {
         if (managerAlbumUser.listAlbumManager[i].id == show) {
             console.log(managerAlbumUser.listAlbumManager[i].findAll());
         }
+        break;
     }
 }
 function deleteSong(managerAlbumUser) {
