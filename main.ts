@@ -201,6 +201,7 @@ function addAlbum(managerAlbumUser: ManagerAlbum) {
 
 function showAlbum(managerAlbumUser: ManagerAlbum) {
     console.log(managerAlbumUser.findAll())
+    menuAlbum()
 
 }
 
@@ -208,8 +209,7 @@ function editAlbum(managerAlbumUser: ManagerAlbum) {
     console.log("---- Sửa tên Album----")
     console.log()
     showAlbum(managerAlbumUser)
-    let idEdit = +input.question(" nhap Stt Album muon sua: ")
-    console.log()
+    let idEdit = +input.question(" nhap id Album muon sua: ")
     let newName = input.question(" nhap ten moi cho album: ")
     for (let i = 0; i < managerAlbumUser.listAlbumManager.length; i++) {
         if (managerAlbumUser.listAlbumManager[i].id == idEdit) {
@@ -220,17 +220,18 @@ function editAlbum(managerAlbumUser: ManagerAlbum) {
     }
 }
 
-
 function deleteAlbum(managerAlbumUser: ManagerAlbum) {
     console.log("-----Xóa Album-----")
     console.log()
     let idAlbumDelete = +input.question(" nhap id album can xoa: ")
-    console.log()
-    for (let i = 0; i < managerAlbumUser.listAlbumManager.length; i++) {
-        if (managerAlbumUser.listAlbumManager[i].id == idAlbumDelete) {
-            // managerAlbumUser.findById(idAlbumDelete)
-            managerAlbumUser.listAlbumManager.splice(idAlbumDelete - 1, 1)
-            console.log(" da xoa thanh cong")
+    if (managerAlbumUser.listAlbumManager.length == 0){
+        console.log(" khong co album...")
+    }else {
+        for (let i = 0; i < managerAlbumUser.listAlbumManager.length; i++) {
+            if (managerAlbumUser.listAlbumManager[i].id == idAlbumDelete) {
+                managerAlbumUser.listAlbumManager.splice(idAlbumDelete - 1, 1)
+                console.log(" da xoa thanh cong")
+            }
         }
     }
 }
@@ -265,20 +266,6 @@ function menuSong(managerAlbumUser) {
 
 }
 
-// function addSong(managerAlbumUser: ManagerAlbum) {
-//     let stt = +input.question(" nhap album muon them bai hat: ")
-//     for (let i = 0; i < managerAlbumUser.listAlbumManager.length; i++) {
-//         if (managerAlbumUser.listAlbumManager[i].id == stt) {
-//             let id = +input.question(" nhap id bai hat: ")
-//             let name = input.question(" nhap ten bài hat: ")
-//             let composing = input.question(" sang tac: ")
-//             let song: TheSong = new TheSong(id, name, composing);
-//             managerAlbumUser.listAlbumManager[stt - 1].add(song)
-//             console.log("thêm bài hát thành công")
-//             console.log(managerAlbumUser.listAlbumManager)
-//         }
-//     }
-// }
 function addSong(managerAlbumUser: ManagerAlbum) {
     console.log("----Thêm bài hát----")
     console.log()
@@ -307,12 +294,15 @@ function addSong(managerAlbumUser: ManagerAlbum) {
 function showSong(managerAlbumUser: ManagerAlbum) {
     console.log("----Hiển thị bài hát----")
     console.log()
-    let show = +input.question(" nhap album muon hien  ")
-    for (let i = 0; i < managerAlbumUser.listAlbumManager[show - 1].listTheSong.length; i++) {
-        if (managerAlbumUser.listAlbumManager[show - 1].id == show) {
-            console.log(managerAlbumUser.listAlbumManager[show - 1].findAll())
+    let show = +input.question(" nhap album ")
+    if( managerAlbumUser.listAlbumManager[show -1].listTheSong.length == 0){
+        console.log(" khong co bai hat nao...")
+    }else {
+        for (let i = 0; i < managerAlbumUser.listAlbumManager[show - 1].listTheSong.length; i++) {
+            if (managerAlbumUser.listAlbumManager[show - 1].id == show) {
+                console.log(managerAlbumUser.listAlbumManager[show - 1].findAll())
+            }
         }
-        break;
     }
 }
 
@@ -321,29 +311,18 @@ function deleteSong(managerAlbumUser) {
     console.log()
     showSong(managerAlbumUser)
     let deleteSong = +input.question(" nhap id bai hat muon xóa: ")
-    for (let i = 0; i < managerAlbumUser.listAlbumManager[deleteSong - 1].listTheSong.length; i++) {
-        if ((managerAlbumUser.listAlbumManager[deleteSong - 1].id == deleteSong)) {
-            managerAlbumUser.listAlbumManager[deleteSong - 1].listTheSong.splice(deleteSong - 1, 1)
-            console.log(" Da xoa thanh cong.....")
+        for (let i = 0; i < managerAlbumUser.listAlbumManager[deleteSong - 1].listTheSong.length; i++) {
+            if ((managerAlbumUser.listAlbumManager[deleteSong - 1].id == deleteSong)) {
+                managerAlbumUser.listAlbumManager[deleteSong - 1].listTheSong.splice(deleteSong - 1, 1)
+                console.log(" Da xoa thanh cong.....")
+            }
         }
-    }
 }
-
-// function searchSong(managerAlbumUser) {
-//     console.log("----Tìm kiếm----")
-//     console.log()
-//     showSong(managerAlbumUser)
-//     let search = input.question(" nhap ten bai hat: ")
-//     for (let i = 0; i < managerAlbumUser.listAlbumManager[search -1].listTheSong.length; i++) {
-//         if(managerAlbumUser.listAlbumManager[search -1].name.includes(search)){
-//             console.log(managerAlbumUser.listAlbumManager[search -1].listTheSong[search])
-//         }
-//     }
-// }
 
 function searchSong(managerAlbumUser) {
     console.log("----Tìm kiếm----")
     console.log()
+    showSong(managerAlbumUser)
     let search = input.question(" nhap ten bai hat: ")
     for (let i = 0; i < managerAlbumUser.listAlbumManager.length; i++) {
         for (let j = 0; j < managerAlbumUser.listAlbumManager[i].listTheSong.length; j++) {

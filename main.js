@@ -193,13 +193,13 @@ function addAlbum(managerAlbumUser) {
 }
 function showAlbum(managerAlbumUser) {
     console.log(managerAlbumUser.findAll());
+    menuAlbum();
 }
 function editAlbum(managerAlbumUser) {
     console.log("---- Sửa tên Album----");
     console.log();
     showAlbum(managerAlbumUser);
-    var idEdit = +input.question(" nhap Stt Album muon sua: ");
-    console.log();
+    var idEdit = +input.question(" nhap id Album muon sua: ");
     var newName = input.question(" nhap ten moi cho album: ");
     for (var i = 0; i < managerAlbumUser.listAlbumManager.length; i++) {
         if (managerAlbumUser.listAlbumManager[i].id == idEdit) {
@@ -213,12 +213,15 @@ function deleteAlbum(managerAlbumUser) {
     console.log("-----Xóa Album-----");
     console.log();
     var idAlbumDelete = +input.question(" nhap id album can xoa: ");
-    console.log();
-    for (var i = 0; i < managerAlbumUser.listAlbumManager.length; i++) {
-        if (managerAlbumUser.listAlbumManager[i].id == idAlbumDelete) {
-            // managerAlbumUser.findById(idAlbumDelete)
-            managerAlbumUser.listAlbumManager.splice(idAlbumDelete - 1, 1);
-            console.log(" da xoa thanh cong");
+    if (managerAlbumUser.listAlbumManager.length == 0) {
+        console.log(" khong co album...");
+    }
+    else {
+        for (var i = 0; i < managerAlbumUser.listAlbumManager.length; i++) {
+            if (managerAlbumUser.listAlbumManager[i].id == idAlbumDelete) {
+                managerAlbumUser.listAlbumManager.splice(idAlbumDelete - 1, 1);
+                console.log(" da xoa thanh cong");
+            }
         }
     }
 }
@@ -290,12 +293,16 @@ function addSong(managerAlbumUser) {
 function showSong(managerAlbumUser) {
     console.log("----Hiển thị bài hát----");
     console.log();
-    var show = +input.question(" nhap album muon hien  ");
-    for (var i = 0; i < managerAlbumUser.listAlbumManager[show - 1].listTheSong.length; i++) {
-        if (managerAlbumUser.listAlbumManager[show - 1].id == show) {
-            console.log(managerAlbumUser.listAlbumManager[show - 1].findAll());
+    var show = +input.question(" nhap album ");
+    if (managerAlbumUser.listAlbumManager[show - 1].listTheSong.length == 0) {
+        console.log(" khong co bai hat nao...");
+    }
+    else {
+        for (var i = 0; i < managerAlbumUser.listAlbumManager[show - 1].listTheSong.length; i++) {
+            if (managerAlbumUser.listAlbumManager[show - 1].id == show) {
+                console.log(managerAlbumUser.listAlbumManager[show - 1].findAll());
+            }
         }
-        break;
     }
 }
 function deleteSong(managerAlbumUser) {
@@ -310,20 +317,10 @@ function deleteSong(managerAlbumUser) {
         }
     }
 }
-// function searchSong(managerAlbumUser) {
-//     console.log("----Tìm kiếm----")
-//     console.log()
-//     showSong(managerAlbumUser)
-//     let search = input.question(" nhap ten bai hat: ")
-//     for (let i = 0; i < managerAlbumUser.listAlbumManager[search -1].listTheSong.length; i++) {
-//         if(managerAlbumUser.listAlbumManager[search -1].name.includes(search)){
-//             console.log(managerAlbumUser.listAlbumManager[search -1].listTheSong[search])
-//         }
-//     }
-// }
 function searchSong(managerAlbumUser) {
     console.log("----Tìm kiếm----");
     console.log();
+    showSong(managerAlbumUser);
     var search = input.question(" nhap ten bai hat: ");
     for (var i = 0; i < managerAlbumUser.listAlbumManager.length; i++) {
         for (var j = 0; j < managerAlbumUser.listAlbumManager[i].listTheSong.length; j++) {
